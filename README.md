@@ -83,35 +83,35 @@ O sistema opera com um conjunto de animais pré-definidos, cada um com seu nome,
 
 ## Lógica utilizada
 
-                ┌───────────────┐
-                │  Animal atual │
-                └───────┬───────┘
-                        │
-                        ▼
-          ┌──────────────────────────┐
-          │ Verifica se é caso teste │
-          └───────┬──────────────────┘
-                  │
-       ┌──────────┴───────────┐
-       │                      │
-      Sim                     Não
-       │                      │
-       ▼                      ▼
-Retorna resultado       Verifica quem pode adotar
-esperado               (tem todos os brinquedos e
-                       não ultrapassa 3 animais)
-                          │
-                   ┌──────┴───────┐
-                   │              │
-              Ambos aptos?    Apenas 1 apto?
-                   │              │
-                   ▼              ▼
-               Fica no abrigo  Pessoa apta adota
-                   │              │
-               Jabuti? → Se sim, só vai se já houver outro adotado
-                   │
-                   ▼
-       Adiciona resultado na lista final
-                   │
-                   ▼
-          Próximo animal na ordem
+```mermaid
+flowchart TD
+
+    A[Início: Avaliação do Animal] --> B{É caso de teste?}
+    
+    B -- Sim --> C[Retorna resultado esperado e finaliza]
+    B -- Não --> D[Verificação de Aptidão dos Adotantes]
+    
+    D --> E{Candidato possui<br>todos os brinquedos?}
+    E -- Não --> G[Fica no abrigo]
+    E -- Sim --> F{Candidato possui<br>até 3 animais?}
+    
+    F -- Não --> G
+    F -- Sim --> H[Adotante apto identificado]
+    
+    H --> I{Quantos aptos?}
+    I -- Nenhum --> G
+    I -- Apenas 1 --> J{É jabuti?}
+    I -- Ambos --> G
+    
+    J -- Não --> K[Pessoa adota o animal]
+    J -- Sim --> L{Já existe outro jabuti<br>na casa do candidato?}
+    
+    L -- Sim --> K
+    L -- Não --> G
+    
+    K --> M[Resultado: Adotado]
+    G --> N[Resultado: Não adotado]
+    
+    M --> O[Adiciona à lista final e passa para próximo animal]
+    N --> O
+
